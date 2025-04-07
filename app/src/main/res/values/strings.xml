@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">rede_social_dmo2</string>
+    <string name="hint_email">Digite seu email</string>
+    <string name="hint_senha">Digite sua senha</string>
+    <string name="button_login">entrar</string>
+    <string name="button_register">cadastrar</string>
+    <string name="button_logoff">sair</string>
+    <string name="error_login">Email ou senha inválidos</string>
+    <string name="password_again">Digite sua senha novamente</string>
+    <string name="button_signup">Criar conta</string>
+    <string name="error_register_edittexts">Preencha os campos</string>
+    <string name="error_register_passwords">Senhas não correspondentes</string>
+    <string name="change_photo_button">Alterar foto</string>
+    <string name="hint_user_name">Nome de usuário (público)</string>
+    <string name="hint_complete_name">Nome completo</string>
+    <string name="save_changes_button">Salvar alterações</string>
+    <string name="button_get_profile">Alterar perfil</string>
+</resources>

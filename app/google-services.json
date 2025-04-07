@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361339924547",
+    "project_id": "micro-rede-social-6a15e",
+    "storage_bucket": "micro-rede-social-6a15e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361339924547:android:1e33974972ca4254b8a4f6",
+        "android_client_info": {
+          "package_name": "ifsp.rede.social.dmo2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPqiYOiomQIu9pJ6UhA0MT6a13uJCa7nM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
