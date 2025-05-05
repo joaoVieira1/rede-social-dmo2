@@ -9,68 +9,65 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import ifsp.rede.social.dmo2.databinding.ActivityPostBinding
 import ifsp.rede.social.dmo2.databinding.ActivityProfileBinding
 import ifsp.rede.social.dmo2.utils.Base64Converter
 
-class ProfileActivity : AppCompatActivity() {
+class PostActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityProfileBinding
+    private lateinit var binding: ActivityPostBinding
     val firebaseAuth = FirebaseAuth.getInstance()
-
     val galeria = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()) {
+        ActivityResultContracts.PickVisualMedia()){
             uri ->
-        if (uri != null) {
-            binding.image.setImageURI(uri)
-        } else {
-            Toast.makeText(this, getString(R.string.nobody_photo), Toast.LENGTH_LONG).show()
-        }
+                if(uri != null){
+                    binding.imagePost.setImageURI(uri)
+                }else{
+                    Toast.makeText(this, getString(R.string.nobody_photo), Toast.LENGTH_SHORT).show()
+                }
     }
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         configListeners()
-
     }
 
     private fun configListeners(){
-        binding.buttonChangePhoto.setOnClickListener {
+        binding.buttonChangeImagePost.setOnClickListener {
             galeria.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
-        binding.buttonSavePhoto.setOnClickListener {
-            persistenceDataBase()
+        binding.buttonSavePost.setOnClickListener {
+            savePost()
         }
-
     }
 
-    private fun persistenceDataBase(){
+    private fun savePost(){
         if(firebaseAuth.currentUser != null){
+
             val email = firebaseAuth.currentUser!!.email.toString()
-            val username = binding.editTextNameUser.text.toString()
-            val completeName = binding.editTextCompleteName.text.toString()
-            val photo = Base64Converter.drawableToString(binding.image.drawable)
+            val imagePost = Base64Converter.drawableToString(binding.imagePost.drawable)
+            val descricaoPost = binding.editTextPost.text.toString()
 
             val db = Firebase.firestore
 
             val dados = hashMapOf(
-                "username" to username,
-                "nomeCompleto" to completeName,
-                "fotoPerfil" to photo
+                "email" to email,
+                "imageString" to imagePost,
+                "descricao" to descricaoPost,
+                "timeStamp" to System.currentTimeMillis()
             )
 
-            db.collection("usuarios").document(email)
-                .set(dados)
+            db.collection("posts")
+                .add(dados)
                 .addOnCompleteListener {
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 }
         }
-
-
 
     }
 

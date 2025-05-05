@@ -3,10 +3,13 @@ package ifsp.rede.social.dmo2
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import ifsp.rede.social.dmo2.adapter.PostAdapter
 import ifsp.rede.social.dmo2.databinding.ActivityHomeBinding
+import ifsp.rede.social.dmo2.model.Post
 import ifsp.rede.social.dmo2.utils.Base64Converter
 
 class HomeActivity: AppCompatActivity() {
@@ -20,8 +23,7 @@ class HomeActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         configListeners()
-        setDataBase()
-
+        setData()
     }
 
     private fun configListeners(){
@@ -31,6 +33,14 @@ class HomeActivity: AppCompatActivity() {
 
         binding.buttonProfile.setOnClickListener {
             getProfileActivity()
+        }
+
+        binding.buttonLoadFeed.setOnClickListener {
+            loadFeed()
+        }
+
+        binding.buttonPost.setOnClickListener {
+            getPostActivity()
         }
 
     }
@@ -46,23 +56,52 @@ class HomeActivity: AppCompatActivity() {
         finish()
     }
 
-    private fun setDataBase(){
+    private fun getPostActivity(){
+        startActivity(Intent(this, PostActivity::class.java))
+        finish()
+    }
+
+    private fun loadFeed(){
+        val db = Firebase.firestore
+
+        db.collection("posts").get()
+            .addOnCompleteListener {
+                task ->
+                    if(task.isSuccessful){
+                        val document = task.result
+                        val posts = ArrayList<Post>()
+
+                        for(document in document.documents){
+                            val imageString = document.data!!["imageString"].toString()
+                            val imageBitMap = Base64Converter.stringToBitmap(imageString)
+                            val descricao = document.data!!["descricao"].toString()
+                            posts.add(Post(descricao, imageBitMap))
+                        }
+
+                        val adapter = PostAdapter(posts.toTypedArray())
+                        binding.recycleView.layoutManager = LinearLayoutManager(this)
+                        binding.recycleView.adapter = adapter
+                    }
+            }
+
+    }
+
+    private fun setData(){
         val db = Firebase.firestore
         val email = firebaseAuth.currentUser!!.email.toString()
 
         db.collection("usuarios").document(email).get()
             .addOnCompleteListener {
                 task ->
-                    if(task.isSuccessful){
-                        val document = task.result
-                        val imageString = document.data!!["fotoPerfil"].toString()
-                        val bitmap = Base64Converter.stringToBitmap(imageString)
-                        binding.imageLogo.setImageBitmap(bitmap)
-                        binding.username.text = document.data!!["username"].toString()
-                        binding.nameComplete.text = document.data!!["nomeCompleto"].toString()
-                    }
+                        if(task.isSuccessful){
+                            val document = task.result
+                            val imageString = document.data!!["fotoPerfil"].toString()
+                            val imageBitMap = Base64Converter.stringToBitmap(imageString)
+                            binding.imageUser.setImageBitmap(imageBitMap)
+                            binding.username.text = document.data!!["username"].toString()
+                            binding.nameComplete.text = document.data!!["nomeCompleto"].toString()
+                        }
             }
-
     }
 
 }

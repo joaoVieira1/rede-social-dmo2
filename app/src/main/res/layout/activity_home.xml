@@ -5,36 +5,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/image_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/image_user"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/empty_profile"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="40dp"/>
 
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_logo"
-        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="@id/image_user"
+        app:layout_constraintEnd_toEndOf="@id/image_user"
+        app:layout_constraintTop_toBottomOf="@+id/image_user"
+        android:layout_marginBottom="2dp"
         android:textStyle="bold"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/name_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/username"
+        app:layout_constraintEnd_toEndOf="@id/username"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/button_profile"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        app:layout_constraintStart_toEndOf="@id/image_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_user"
+        android:text="@string/button_get_profile"
+        android:textAllCaps="true"
+        android:background="@color/gray"/>
+
+    <Button
+        android:id="@+id/button_load_feed"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        app:layout_constraintStart_toEndOf="@id/image_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_profile"
+        android:text="@string/button_load_feed"
+        android:textAllCaps="true"
+        android:background="@color/gray"
+        android:layout_marginTop="17dp"/>
+
+    <Button
+        android:id="@+id/button_post"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        app:layout_constraintStart_toEndOf="@id/image_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_load_feed"
+        android:text="@string/button_post"
+        android:textAllCaps="true"
+        android:background="@color/gray"
+        android:layout_marginTop="17dp"/>
 
     <Button
         android:id="@+id/button_logoff"
@@ -42,22 +75,19 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/button_logoff"
         android:textAllCaps="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/gray"/>
 
-    <Button
-        android:id="@+id/button_profile"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_logoff"
-        android:text="@string/button_get_profile"
-        android:textAllCaps="true"
-        android:layout_marginBottom="20dp"
-        android:background="@color/gray"/>
+        app:layout_constraintTop_toBottomOf="@id/name_complete"
+        app:layout_constraintBottom_toTopOf="@id/button_logoff"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

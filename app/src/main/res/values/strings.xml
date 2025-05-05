@@ -15,4 +15,10 @@
     <string name="hint_complete_name">Nome completo</string>
     <string name="save_changes_button">Salvar alterações</string>
     <string name="button_get_profile">Alterar perfil</string>
+    <string name="button_load_feed">Carregar feed</string>
+    <string name="button_post">Carregar post</string>
+    <string name="hint_post">Legenda ou descrição do post</string>
+    <string name="button_photo_post">Carregar foto</string>
+    <string name="button_save_post">Salvar post</string>
+    <string name="nobody_photo">Nenhuma foto selecionada</string>
 </resources>
