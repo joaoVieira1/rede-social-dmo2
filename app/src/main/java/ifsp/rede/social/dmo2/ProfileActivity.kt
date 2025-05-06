@@ -16,15 +16,14 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityProfileBinding
     val firebaseAuth = FirebaseAuth.getInstance()
-
     val galeria = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()) {
             uri ->
-        if (uri != null) {
-            binding.image.setImageURI(uri)
-        } else {
-            Toast.makeText(this, getString(R.string.nobody_photo), Toast.LENGTH_LONG).show()
-        }
+                if (uri != null) {
+                    binding.image.setImageURI(uri)
+                } else {
+                    Toast.makeText(this, getString(R.string.nobody_photo), Toast.LENGTH_LONG).show()
+                }
     }
 
     override fun onCreate(savedInstanceState: Bundle?){

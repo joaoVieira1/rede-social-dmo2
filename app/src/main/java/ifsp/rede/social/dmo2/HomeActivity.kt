@@ -75,7 +75,9 @@ class HomeActivity: AppCompatActivity() {
                             val imageString = document.data!!["imageString"].toString()
                             val imageBitMap = Base64Converter.stringToBitmap(imageString)
                             val descricao = document.data!!["descricao"].toString()
-                            posts.add(Post(descricao, imageBitMap))
+                            val localizacao = document.data!!["cidade"].toString()
+                            val username = document.data!!["username"].toString()
+                            posts.add(Post(descricao, imageBitMap, localizacao, username))
                         }
 
                         val adapter = PostAdapter(posts.toTypedArray())

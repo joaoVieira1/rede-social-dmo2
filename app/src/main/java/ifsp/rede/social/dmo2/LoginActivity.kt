@@ -37,7 +37,12 @@ class LoginActivity : AppCompatActivity() {
         var email = binding.editTextEmail.text.toString()
         var senha = binding.editTextSenha.text.toString()
 
-        firebaseSignUser(email, senha)
+        if(email.isNotEmpty() || senha.isNotEmpty()){
+            firebaseSignUser(email, senha)
+        }else{
+            Toast.makeText(this, R.string.error_login, Toast.LENGTH_SHORT).show()
+        }
+
 
     }
 

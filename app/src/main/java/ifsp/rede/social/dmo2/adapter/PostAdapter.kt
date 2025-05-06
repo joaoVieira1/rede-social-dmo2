@@ -13,7 +13,9 @@ class PostAdapter(private val posts: Array<Post>) : RecyclerView.Adapter<PostAda
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val imgPost : ImageView = view.findViewById(R.id.image_view_card)
-        val descricaoPost : TextView = view.findViewById(R.id.text_view_card)
+        val username: TextView = view.findViewById(R.id.text_nome_usuario)
+        val descricaoPost : TextView = view.findViewById(R.id.text_descricao)
+        val localizacao: TextView = view.findViewById(R.id.text_localizacao)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +32,8 @@ class PostAdapter(private val posts: Array<Post>) : RecyclerView.Adapter<PostAda
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.imgPost.setImageBitmap(posts[position].getFoto())
         holder.descricaoPost.text = posts[position].getDescricao()
+        holder.localizacao.text = posts[position].getLocalizacao()
+        holder.username.text = posts[position].getUsername()
     }
 
 
