@@ -2,10 +2,13 @@ package ifsp.rede.social.dmo2
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import ifsp.rede.social.dmo2.adapter.PostAdapter
 import ifsp.rede.social.dmo2.databinding.ActivityHomeBinding
@@ -16,6 +19,10 @@ class HomeActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     val firebaseAuth = FirebaseAuth.getInstance()
+
+    private var ultimoDocumento: DocumentSnapshot? = null
+    private val posts = ArrayList<Post>()
+    private val LIMITE_PAGINACAO = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,28 +71,45 @@ class HomeActivity: AppCompatActivity() {
     private fun loadFeed(){
         val db = Firebase.firestore
 
-        db.collection("posts").get()
-            .addOnCompleteListener {
-                task ->
-                    if(task.isSuccessful){
-                        val document = task.result
-                        val posts = ArrayList<Post>()
+        var query = db.collection("posts")
+            .orderBy("data", Query.Direction.DESCENDING)
+            .limit(LIMITE_PAGINACAO.toLong())
 
-                        for(document in document.documents){
-                            val imageString = document.data!!["imageString"].toString()
-                            val imageBitMap = Base64Converter.stringToBitmap(imageString)
-                            val descricao = document.data!!["descricao"].toString()
-                            val localizacao = document.data!!["cidade"].toString()
-                            val username = document.data!!["username"].toString()
-                            posts.add(Post(descricao, imageBitMap, localizacao, username))
-                        }
+        ultimoDocumento?.let {
+            query = query.startAfter(it)
+        }
 
-                        val adapter = PostAdapter(posts.toTypedArray())
-                        binding.recycleView.layoutManager = LinearLayoutManager(this)
-                        binding.recycleView.adapter = adapter
+        query.get().addOnCompleteListener {
+            task ->
+                if(task.isSuccessful){
+                    val result = task.result
+
+                    if(result == null || result.isEmpty){
+                        Toast.makeText(this, "Não há mais posts", Toast.LENGTH_SHORT).show()
+                        return@addOnCompleteListener
                     }
-            }
 
+                    ultimoDocumento = result.documents.last()
+
+                    for(document in result.documents){
+                        val imageString = document.data!!["imageString"].toString()
+                        val imageBitMap = Base64Converter.stringToBitmap(imageString)
+                        val descricao = document.data!!["descricao"].toString()
+                        val localizacao = document.data!!["cidade"].toString()
+                        val username = document.data!!["username"].toString()
+                        posts.add(Post(descricao, imageBitMap, localizacao, username))
+                    }
+
+                    if(binding.recycleView.adapter == null){
+                        binding.recycleView.layoutManager = LinearLayoutManager(this)
+                        binding.recycleView.adapter = PostAdapter(posts.toTypedArray())
+                    }else{
+                        binding.recycleView.adapter = PostAdapter(posts.toTypedArray())
+                    }
+                }
+        }
+
+        posts.clear()
     }
 
     private fun setData(){
